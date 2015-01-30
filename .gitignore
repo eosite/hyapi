@@ -2,10 +2,12 @@
 *.o
 *.a
 *.so
+*.dll
 
 # Folders
 _obj
 _test
+Data
 
 # Architecture specific extensions/prefixes
 *.[568vq]
