@@ -22,6 +22,9 @@ func main() {
 	lib = NewSicLib(`libSmartIndustryCode.dll`)
 	defer lib.Free()
 	lib.Init(1)
+	http.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(404)
+	})
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "GET" {
 			w.Write([]byte("error,only get"))

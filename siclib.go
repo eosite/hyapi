@@ -53,5 +53,7 @@ func (s *SicLib) GetFirst(desc string) string {
 }
 func (s *SicLib) GetCode(desc string, maxBookCode, maxSmartCode int) string {
 	r, _, _ := syscall.Syscall(s.sic_getCode, 3, uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(desc))), uintptr(maxBookCode), uintptr(maxSmartCode))
-	return UintptrToString(r)
+	code := UintptrToString(r)
+	syscall.Syscall(s.sic_freeString, 1, r, 0, 0)
+	return code
 }
