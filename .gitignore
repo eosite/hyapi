@@ -4,6 +4,7 @@
 *.so
 *.dll
 *.ini
+*.rar
 
 # Folders
 _obj

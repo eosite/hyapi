@@ -16,7 +16,7 @@ var (
 )
 
 func main() {
-	port := flag.Int("port", 84, "http listen and serve the port,default=80")
+	port := flag.Int("port", 81, "http listen and serve the port,default=81")
 	flag.Parse()
 
 	lib = NewSicLib(`libSmartIndustryCode.dll`)
@@ -31,14 +31,16 @@ func main() {
 			return
 		}
 		desc := r.URL.Query().Get("d")
-		result := []Result{}
-		for _, oneCode := range strings.Split(strings.Split(lib.GetCode(desc, 0, 3), "|")[1], ";") {
-			result = append(result, Result{
+		result := Result{Codes: []ResultCode{}}
+		codes := strings.Split(lib.GetCode(desc, 0, 5), "|")
+		for _, oneCode := range strings.Split(codes[1], ";") {
+			result.Codes = append(result.Codes, ResultCode{
 				Code:     oneCode,
 				Name:     HyCode[oneCode].Name,
 				Category: HyCategory[HyCode[oneCode].Category],
 			})
 		}
+		result.Hint = strings.Split(codes[2], ";")
 		bys, err := json.Marshal(result)
 		if err != nil {
 			w.Write([]byte(err.Error()))
