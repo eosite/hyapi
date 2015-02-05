@@ -31,7 +31,7 @@ func main() {
 			return
 		}
 		desc := r.URL.Query().Get("d")
-		result := Result{Codes: []ResultCode{}}
+		result := Result{Codes: []ResultCode{}, Hint: []string{}}
 		codes := strings.Split(lib.GetCode(desc, 0, 5), "|")
 		for _, oneCode := range strings.Split(codes[1], ";") {
 			result.Codes = append(result.Codes, ResultCode{
@@ -40,7 +40,9 @@ func main() {
 				Category: HyCategory[HyCode[oneCode].Category],
 			})
 		}
-		result.Hint = strings.Split(codes[2], ";")
+		if codes[2] != "" {
+			result.Hint = strings.Split(codes[2], ";")
+		}
 		bys, err := json.Marshal(result)
 		if err != nil {
 			w.Write([]byte(err.Error()))
